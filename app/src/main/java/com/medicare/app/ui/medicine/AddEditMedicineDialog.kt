@@ -6,6 +6,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import com.medicare.app.data.model.Medicine
 import com.medicare.app.databinding.DialogAddMedicineBinding
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AddEditMedicineDialog(
@@ -23,9 +24,11 @@ class AddEditMedicineDialog(
             binding.etMedicineName.setText(it.name)
             binding.etDosage.setText(it.dosage)
             binding.etNotes.setText(it.notes)
-            binding.tvSelectedTime.text = it.time
+            binding.tvSelectedTime.text = formatTo12Hour(it.time)
             if (it.beforeFood) binding.rbBeforeFood.isChecked = true
             else binding.rbAfterFood.isChecked = true
+        } ?: run {
+            binding.tvSelectedTime.text = formatTo12Hour(selectedTime)
         }
 
         // Time Picker
@@ -36,8 +39,8 @@ class AddEditMedicineDialog(
 
             TimePickerDialog(context, { _, h, m ->
                 selectedTime = String.format("%02d:%02d", h, m)
-                binding.tvSelectedTime.text = selectedTime
-            }, hour, minute, true).show()
+                binding.tvSelectedTime.text = formatTo12Hour(selectedTime)
+            }, hour, minute, false).show() // false for AM/PM view
         }
 
         val dialog = AlertDialog.Builder(context)
@@ -77,5 +80,16 @@ class AddEditMedicineDialog(
         }
 
         dialog.show()
+    }
+
+    private fun formatTo12Hour(time24h: String): String {
+        return try {
+            val sdf24 = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val sdf12 = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            val date = sdf24.parse(time24h)
+            sdf12.format(date!!)
+        } catch (e: Exception) {
+            time24h
+        }
     }
 }

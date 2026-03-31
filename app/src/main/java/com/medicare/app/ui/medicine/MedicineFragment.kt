@@ -66,8 +66,10 @@ class MedicineFragment : Fragment() {
                 context = requireContext(),
                 medicine = null,
                 onSave = { newMedicine ->
-                    medicineViewModel.insert(newMedicine)
-                    AlarmScheduler.scheduleMedicineAlarm(requireContext(), newMedicine)
+                    medicineViewModel.insert(newMedicine) { generatedId ->
+                        val medicineWithId = newMedicine.copy(id = generatedId.toInt())
+                        AlarmScheduler.scheduleMedicineAlarm(requireContext(), medicineWithId)
+                    }
                 }
             ).show()
         }

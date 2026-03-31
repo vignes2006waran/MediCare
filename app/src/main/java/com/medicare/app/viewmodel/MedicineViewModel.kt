@@ -20,8 +20,9 @@ class MedicineViewModel(application: Application) : AndroidViewModel(application
         allMedicines = repository.allMedicines
     }
 
-    fun insert(medicine: Medicine) = viewModelScope.launch {
-        repository.insert(medicine)
+    fun insert(medicine: Medicine, onResult: (Long) -> Unit) = viewModelScope.launch {
+        val id = repository.insert(medicine)
+        onResult(id)
     }
 
     fun update(medicine: Medicine) = viewModelScope.launch {

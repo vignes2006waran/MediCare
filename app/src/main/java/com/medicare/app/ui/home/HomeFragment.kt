@@ -1,6 +1,8 @@
 package com.medicare.app.ui.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +23,14 @@ class HomeFragment : Fragment() {
 
     private lateinit var medicineViewModel: MedicineViewModel
     private lateinit var foodViewModel: FoodViewModel
+    
+    private val handler = Handler(Looper.getMainLooper())
+    private val updateTimeRunnable = object : Runnable {
+        override fun run() {
+            setGreetingAndDate()
+            handler.postDelayed(this, 1000) // Update every second for "real-time"
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,21 +47,21 @@ class HomeFragment : Fragment() {
         medicineViewModel = ViewModelProvider(this)[MedicineViewModel::class.java]
         foodViewModel = ViewModelProvider(this)[FoodViewModel::class.java]
 
-        // Set greeting and date
-        setGreetingAndDate()
+        // Start real-time clock and greeting
+        handler.post(updateTimeRunnable)
 
         // Observe medicine count
         medicineViewModel.allMedicines.observe(viewLifecycleOwner) { medicines ->
             val count = medicines.size
             binding.tvMedicineCount.text = "$count Medicine${if (count != 1) "s" else ""}"
-            binding.tvMedicineSubtitle.text = if (count == 0) "No medicines added yet" else "Tap to manage"
+            binding.tvMedicineSubtitle.text = if (count == 0) "No medicines added yet" else "Track your daily doses"
         }
 
         // Observe food count
         foodViewModel.allFoodSchedules.observe(viewLifecycleOwner) { schedules ->
             val count = schedules.size
             binding.tvFoodCount.text = "$count Meal${if (count != 1) "s" else ""}"
-            binding.tvFoodSubtitle.text = if (count == 0) "No meals added yet" else "Tap to manage"
+            binding.tvFoodSubtitle.text = if (count == 0) "No meals added yet" else "Manage your meal schedule"
         }
 
         // Card click listeners
@@ -69,21 +79,28 @@ class HomeFragment : Fragment() {
     }
 
     private fun setGreetingAndDate() {
-        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        val greeting = when {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        
+        val timeFormat = SimpleDateFormat("hh:mm:ss a", Locale.getDefault())
+        val currentTime = timeFormat.format(calendar.time)
+
+        val greetingText = when {
             hour < 12 -> "Good Morning 🌤️"
             hour < 17 -> "Good Afternoon ☀️"
             hour < 21 -> "Good Evening 🌙"
             else -> "Good Night 🌛"
         }
-        binding.tvGreeting.text = greeting
+        
+        binding.tvGreeting.text = "$greetingText\n$currentTime"
 
         val dateFormat = SimpleDateFormat("EEEE, dd MMM yyyy", Locale.getDefault())
-        binding.tvDate.text = dateFormat.format(Date())
+        binding.tvDate.text = dateFormat.format(calendar.time)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        handler.removeCallbacks(updateTimeRunnable)
         _binding = null
     }
 }

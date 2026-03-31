@@ -20,8 +20,9 @@ class FoodViewModel(application: Application) : AndroidViewModel(application) {
         allFoodSchedules = repository.allFoodSchedules
     }
 
-    fun insert(foodSchedule: FoodSchedule) = viewModelScope.launch {
-        repository.insert(foodSchedule)
+    fun insert(foodSchedule: FoodSchedule, onResult: (Long) -> Unit) = viewModelScope.launch {
+        val id = repository.insert(foodSchedule)
+        onResult(id)
     }
 
     fun update(foodSchedule: FoodSchedule) = viewModelScope.launch {

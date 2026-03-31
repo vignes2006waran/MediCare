@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import com.medicare.app.data.model.FoodSchedule
 import com.medicare.app.databinding.DialogAddFoodBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddFoodDialog(
     private val context: Context,
@@ -22,16 +24,21 @@ class AddFoodDialog(
         binding.spinnerMealType.adapter = spinnerAdapter
 
         food?.let {
-            binding.tvSelectedTime.text = it.time
+            binding.tvSelectedTime.text = formatTo12Hour(it.time)
             binding.spinnerMealType.setSelection(mealTypes.indexOf(it.mealType))
+        } ?: run {
+            binding.tvSelectedTime.text = formatTo12Hour(selectedTime)
         }
 
         binding.btnPickTime.setOnClickListener {
             val parts = selectedTime.split(":")
+            val hour = parts[0].toIntOrNull() ?: 8
+            val minute = parts[1].toIntOrNull() ?: 0
+
             TimePickerDialog(context, { _, h, m ->
                 selectedTime = String.format("%02d:%02d", h, m)
-                binding.tvSelectedTime.text = selectedTime
-            }, parts[0].toIntOrNull() ?: 8, parts[1].toIntOrNull() ?: 0, true).show()
+                binding.tvSelectedTime.text = formatTo12Hour(selectedTime)
+            }, hour, minute, false).show() // false for AM/PM view
         }
 
         val dialog = AlertDialog.Builder(context)
@@ -45,16 +52,26 @@ class AddFoodDialog(
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val mealType = binding.spinnerMealType.selectedItem.toString()
 
-                // Since foodName is removed from UI, we'll use mealType as the name or leave it empty
                 onSave(FoodSchedule(
                     id = food?.id ?: 0,
                     mealType = mealType,
-                    foodName = mealType, // Use mealType as name since input is removed
+                    foodName = mealType,
                     time = selectedTime
                 ))
                 dialog.dismiss()
             }
         }
         dialog.show()
+    }
+
+    private fun formatTo12Hour(time24h: String): String {
+        return try {
+            val sdf24 = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val sdf12 = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            val date = sdf24.parse(time24h)
+            sdf12.format(date!!)
+        } catch (e: Exception) {
+            time24h
+        }
     }
 }

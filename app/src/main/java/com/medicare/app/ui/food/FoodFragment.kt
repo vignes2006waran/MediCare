@@ -51,8 +51,10 @@ class FoodFragment : Fragment() {
 
         binding.fabAddFood.setOnClickListener {
             AddFoodDialog(requireContext(), null) { newFood ->
-                foodViewModel.insert(newFood)
-                AlarmScheduler.scheduleFoodAlarm(requireContext(), newFood)
+                foodViewModel.insert(newFood) { generatedId ->
+                    val foodWithId = newFood.copy(id = generatedId.toInt())
+                    AlarmScheduler.scheduleFoodAlarm(requireContext(), foodWithId)
+                }
             }.show()
         }
     }
