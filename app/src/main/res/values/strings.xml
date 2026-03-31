@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MediCare</string>
+
+    <!-- Home -->
+    <string name="home">Home</string>
+    <string name="todays_medicines">Today\'s Medicines</string>
+    <string name="todays_meals">Today\'s Meals</string>
+    <string name="no_medicines">No medicines added yet</string>
+    <string name="no_meals">No meals added yet</string>
+
+    <!-- Medicine -->
+    <string name="medicines">Medicines</string>
+    <string name="add_medicine">Add Medicine</string>
+    <string name="medicine_name">Medicine Name</string>
+    <string name="dosage">Dosage (e.g. 1 tablet)</string>
+    <string name="time">Time</string>
+    <string name="before_food">Before Food</string>
+    <string name="after_food">After Food</string>
+    <string name="notes">Notes (optional)</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
+    <!-- Food -->
+    <string name="food_schedule">Food Schedule</string>
+    <string name="add_meal">Add Meal</string>
+    <string name="meal_type">Meal Type</string>
+    <string name="food_name">Food Name</string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
+    <string name="evening">Evening</string>
+    <string name="night">Night</string>
+
+    <!-- Chat -->
+    <string name="medibot">MediBot</string>
+    <string name="chat_hint">Ask about any medicine...</string>
+    <string name="chat_welcome">Hi! I\'m MediBot 👋\nAsk me anything about medicines!</string>
+
+    <!-- Notifications -->
+    <string name="medicine_notification_title">Medicine Time!</string>
+    <string name="food_notification_title">Meal Time!</string>
+</resources>

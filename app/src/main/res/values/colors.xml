@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Modern Primary Palette -->
+    <color name="primary">#0D47A1</color>
+    <color name="primary_dark">#002171</color>
+    <color name="primary_light">#E3F2FD</color>
+    <color name="accent">#2979FF</color>
+
+    <!-- Refined Backgrounds -->
+    <color name="background">#F8FAFC</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Modern Typography -->
+    <color name="text_primary">#1E293B</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_hint">#94A3B8</color>
+
+    <!-- Semantic Colors -->
+    <color name="success">#10B981</color>
+    <color name="success_light">#ECFDF5</color>
+    <color name="warning">#F59E0B</color>
+    <color name="error">#EF4444</color>
+    <color name="error_light">#FEF2F2</color>
+
+    <!-- Category Specific -->
+    <color name="medicine_card">#E0F2FE</color>
+    <color name="food_card">#F0FDF4</color>
+    <color name="chat_card">#F5F3FF</color>
+    <color name="chat_user_bubble">#0D47A1</color>
+    <color name="chat_bot_bubble">#F1F5F9</color>
+
+    <!-- Bottom Nav -->
+    <color name="bottom_nav_selected">#0D47A1</color>
+    <color name="bottom_nav_unselected">#94A3B8</color>
+</resources>
